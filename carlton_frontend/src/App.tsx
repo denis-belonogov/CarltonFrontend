@@ -7,8 +7,8 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Alert from "react-bootstrap/Alert";
 
-let backendUrl: string = "https://localhost:5000/?";
-//let backendUrl: string = "https://tiefpass.pythonanywhere.com/?";
+//let backendUrl: string = "https://localhost:5000/?";
+let backendUrl: string = "https://tiefpass.pythonanywhere.com/?";
 
 function App() {
   // Initialize date state as a string in 'YYYY-MM-DD' format to match the input type 'date'
