@@ -6,8 +6,9 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Alert from "react-bootstrap/Alert";
+import Dropdown from "react-bootstrap/Dropdown";
 
-//backendUrl = "http://localhost:5000/?";
+//let backendUrl: string = "https://localhost:5000/?";
 let backendUrl: string = "https://tiefpass.pythonanywhere.com/?";
 
 function App() {
@@ -16,25 +17,27 @@ function App() {
   const [departure_date, setDepartureDate] = useState("");
   const [offer, setOffer] = useState("");
   const [n_guests, setNGuests] = useState(0);
+  const [hotel, setHotel] = useState("CARLTON");
   const [copied, setCopied] = useState(false);
 
   // Function to format the date from the date picker to 'YYYY-MM-DD'
   const handleArrivalDateChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newDate = e.target.value; // This will be in 'YYYY-MM-DD' format
     setArrivalDate(newDate);
-    console.log(arrival_date);
   };
 
   const handleDepartureDateChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newDate = e.target.value; // This will be in 'YYYY-MM-DD' format
     setDepartureDate(newDate);
-    console.log(departure_date);
   };
 
   const handleGuestsChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNGuests(Number(e.target.value));
+  };
+
+  const handleHotelChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newDate = e.target.value; // This will be in 'YYYY-MM-DD' format
-    setNGuests(Number(newDate));
-    console.log(n_guests);
+    setHotel(newDate);
   };
 
   async function handleSubmit() {
@@ -44,7 +47,7 @@ function App() {
           arrival_date: arrival_date,
           departure_date: departure_date,
           adults: n_guests.toString(),
-          propertyId: "CARLTON",
+          propertyId: hotel,
         })
     );
     const data = await response.json();
@@ -92,6 +95,17 @@ function App() {
             value={n_guests} // date is now a string, compatible with input type 'date'
             onChange={handleGuestsChange} // Use the new handler function
           />
+        </Col>
+        <Col md="auto">
+          <Form.Select
+            value={hotel}
+            onChange={(e) =>
+              handleHotelChange(e as unknown as ChangeEvent<HTMLInputElement>)
+            }
+          >
+            <option value="CARLTON">Hotel Carlton</option>
+            <option value="SENATOR">Hotel Senator</option>
+          </Form.Select>
         </Col>
       </Row>
       <Button variant="primary" onClick={handleSubmit}>
