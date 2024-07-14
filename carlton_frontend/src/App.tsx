@@ -13,10 +13,15 @@ let backendUrl: string = "https://tiefpass.pythonanywhere.com/?";
 
 function App() {
   // Initialize date state as a string in 'YYYY-MM-DD' format to match the input type 'date'
-  const [arrival_date, setArrivalDate] = useState("");
-  const [departure_date, setDepartureDate] = useState("");
+  var currentDate = new Date();
+  var currentDateString = currentDate.toJSON().slice(0, 10);
+  var tomorrow = currentDate;
+  tomorrow.setDate(currentDate.getDate() + 1);
+  var tomorrowDateString = tomorrow.toJSON().slice(0, 10);
+  const [arrival_date, setArrivalDate] = useState(currentDateString);
+  const [departure_date, setDepartureDate] = useState(tomorrowDateString);
   const [offer, setOffer] = useState("");
-  const [n_guests, setNGuests] = useState(0);
+  const [n_guests, setNGuests] = useState(1);
   const [hotel, setHotel] = useState("CARLTON");
   const [copied, setCopied] = useState(false);
 
