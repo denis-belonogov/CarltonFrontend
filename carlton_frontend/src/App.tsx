@@ -43,7 +43,8 @@ function App() {
         new URLSearchParams({
           arrival_date: arrival_date,
           departure_date: departure_date,
-          n_guests: n_guests.toString(), // Convert number to string to fix the type issue
+          adults: n_guests.toString(),
+          propertyID: "CARLTON",
         })
     );
     const data = await response.json();
