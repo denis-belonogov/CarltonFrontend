@@ -62,7 +62,7 @@ function App() {
   return (
     <>
       <nav>
-        <img src="./assets/on_hotels_logo.svg" width="250px" height="75px" />
+        <img src="/assets/on_hotels_logo.svg" width="250px" height="75px" />
       </nav>
       <main>
         <Row className="g-2">
