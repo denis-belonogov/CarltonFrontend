@@ -7,6 +7,9 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Alert from "react-bootstrap/Alert";
 
+//backendUrl = "http://localhost:5000/?";
+let backendUrl: string = "http://tiefpass.pythonanywhere.com/?";
+
 function App() {
   // Initialize date state as a string in 'YYYY-MM-DD' format to match the input type 'date'
   const [arrival_date, setArrivalDate] = useState("");
@@ -36,7 +39,7 @@ function App() {
 
   async function handleSubmit() {
     const response = await fetch(
-      "http://localhost:5000/?" +
+      backendUrl +
         new URLSearchParams({
           arrival_date: arrival_date,
           departure_date: departure_date,
