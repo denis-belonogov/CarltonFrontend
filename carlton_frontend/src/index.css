@@ -13,6 +13,21 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+nav{
+  background-color: #1a1a1a;
+  width: 100%;
+  height: 100px;
+  margin-bottom: 10px;
+  padding: 5px 0px;
+  box-shadow: 0px 5px 30px black;
+  display: flex;
+}
+
+nav > img {
+  margin: 10px 50px;
+
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -27,6 +42,16 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  width: 100%;
+  padding: 0px 0px;
+  background-color: #f1f1f1;
+}
+
+main {
+  padding: 0px 0px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
 }
 
 h1 {
@@ -69,7 +94,11 @@ button:focus-visible {
 
 .g-2{
   padding-bottom: 5px;
+  margin: auto;
+  width: 66%;
+  padding: 10px;
 }
+
 
 Label > p {
   font-size: 1.2em;
@@ -82,8 +111,20 @@ Label > p {
   white-space: pre-line;
   text-align: left;
   padding-bottom: 10px;
+  margin: auto;
+}
+
+.alert{
+  width: 750px;
+  text-align: center;
+  padding-bottom: 10px;
+  margin: auto;
 }
 
 .copy_button {
   margin-bottom: 10px;
+}
+
+.n_guests_picker{
+  width: 75px;
 }

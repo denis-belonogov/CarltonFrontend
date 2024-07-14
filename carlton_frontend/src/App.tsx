@@ -61,81 +61,87 @@ function App() {
   }
 
   return (
-    <main>
-      <Row className="g-2">
-        <Col md="auto">
-          <Form.Label>
-            <p>Arrival Date</p>
-          </Form.Label>
-        </Col>
-        <Col md="auto">
-          <Form.Control
-            type="date"
-            value={arrival_date} // date is now a string, compatible with input type 'date'
-            onChange={handleArrivalDateChange} // Use the new handler function
-          />
-        </Col>
+    <>
+      <nav>
+        <img src="../assets/on_hotels_logo.svg" width="250px" height="75px" />
+      </nav>
+      <main>
+        <Row className="g-2">
+          <Col md="auto" className="g-2-col">
+            <Form.Label>
+              <p>Arrival Date</p>
+            </Form.Label>
+          </Col>
+          <Col md="auto" className="g-2-col">
+            <Form.Control
+              type="date"
+              value={arrival_date} // date is now a string, compatible with input type 'date'
+              onChange={handleArrivalDateChange} // Use the new handler function
+            />
+          </Col>
 
-        <Col md="auto">
-          <Form.Label>
-            <p>Departure Date</p>
-          </Form.Label>
-        </Col>
-        <Col md="auto">
-          <Form.Control
-            type="date"
-            value={departure_date} // date is now a string, compatible with input type 'date'
-            onChange={handleDepartureDateChange} // Use the new handler function
-          />
-        </Col>
+          <Col md="auto" className="g-2-col">
+            <Form.Label>
+              <p>Departure Date</p>
+            </Form.Label>
+          </Col>
+          <Col md="auto" className="g-2-col">
+            <Form.Control
+              type="date"
+              value={departure_date} // date is now a string, compatible with input type 'date'
+              onChange={handleDepartureDateChange} // Use the new handler function
+            />
+          </Col>
 
-        <Col md="auto">
-          <Form.Label>
-            <p>Number of guests</p>
-          </Form.Label>
-        </Col>
-        <Col md="auto">
-          <Form.Control
-            type="number"
-            value={n_guests} // date is now a string, compatible with input type 'date'
-            onChange={handleGuestsChange} // Use the new handler function
-          />
-        </Col>
-        <Col md="auto">
-          <Form.Select
-            value={hotel}
-            onChange={(e) =>
-              handleHotelChange(e as unknown as ChangeEvent<HTMLInputElement>)
-            }
+          <Col md="auto" className="g-2-col">
+            <Form.Label>
+              <p>Number of guests</p>
+            </Form.Label>
+          </Col>
+          <Col md="auto" className="g-2-col">
+            <Form.Control
+              className="n_guests_picker"
+              type="number"
+              value={n_guests} // date is now a string, compatible with input type 'date'
+              onChange={handleGuestsChange} // Use the new handler function
+            />
+          </Col>
+          <Col md="auto" className="g-2-col">
+            <Form.Select
+              value={hotel}
+              onChange={(e) =>
+                handleHotelChange(e as unknown as ChangeEvent<HTMLInputElement>)
+              }
+            >
+              <option value="CARLTON">Hotel Carlton</option>
+              <option value="SENATOR">Hotel Senator</option>
+            </Form.Select>
+          </Col>
+        </Row>
+        <Button variant="primary" onClick={handleSubmit}>
+          Generate Offer
+        </Button>{" "}
+        <div className="offer">{offer}</div>
+        {offer.length != 0 && (
+          <Button
+            className="copy_button"
+            variant="primary"
+            onClick={() => {
+              navigator.clipboard.writeText(offer);
+              setCopied(true);
+              setTimeout(() => {
+                setCopied(false);
+              }, 2000);
+            }}
           >
-            <option value="CARLTON">Hotel Carlton</option>
-            <option value="SENATOR">Hotel Senator</option>
-          </Form.Select>
-        </Col>
-      </Row>
-      <Button variant="primary" onClick={handleSubmit}>
-        Generate Offer
-      </Button>{" "}
-      <div className="offer">{offer}</div>
-      {offer.length != 0 && (
-        <Button
-          className="copy_button"
-          variant="primary"
-          onClick={() => {
-            navigator.clipboard.writeText(offer);
-            setCopied(true);
-            setTimeout(() => {
-              setCopied(false);
-            }, 2000);
-          }}
-        >
-          Copy
-        </Button>
-      )}
-      <Alert variant="success" show={copied}>
-        Offer Text copied to clipboard!
-      </Alert>
-    </main>
+            Copy
+          </Button>
+        )}
+        <Alert className="alert" variant="success" show={copied}>
+          Offer Text copied to clipboard!
+        </Alert>
+      </main>
+    </>
   );
 }
 
