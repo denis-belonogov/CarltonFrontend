@@ -44,7 +44,7 @@ function App() {
           arrival_date: arrival_date,
           departure_date: departure_date,
           adults: n_guests.toString(),
-          propertyID: "CARLTON",
+          propertyId: "CARLTON",
         })
     );
     const data = await response.json();
