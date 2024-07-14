@@ -6,7 +6,6 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Alert from "react-bootstrap/Alert";
-import Dropdown from "react-bootstrap/Dropdown";
 
 //let backendUrl: string = "https://localhost:5000/?";
 let backendUrl: string = "https://tiefpass.pythonanywhere.com/?";
