@@ -25,8 +25,12 @@ nav{
 
 nav > img {
   margin: 10px 50px;
+}
+
+nav > div {
 
 }
+
 
 a {
   font-weight: 500;
