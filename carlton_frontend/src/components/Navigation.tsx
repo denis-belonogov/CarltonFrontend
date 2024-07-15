@@ -1,9 +1,6 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import Container from "react-bootstrap/Container";
 
 export default function Navigation() {
   /*
@@ -18,10 +15,20 @@ export default function Navigation() {
   );
   */
   return (
-    <Navbar expand="lg" className="bg-body-tertiary" bg="dark" data-bs-theme="dark">
+    <Navbar
+      expand="lg"
+      className="bg-body-tertiary"
+      bg="dark"
+      data-bs-theme="dark"
+    >
       <Container className="container-navbar">
         <Navbar.Brand>
-          <img src="/on_hotels_logo.svg" className="d-inline-block" width="250px" height="75px" />
+          <img
+            src="/on_hotels_logo.svg"
+            className="d-inline-block"
+            width="250px"
+            height="75px"
+          />
           Carlton Tools
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
