@@ -1,8 +1,8 @@
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "../styles/App.css";
-import OfferApp from "./components/OfferApp";
 import Navigation from "./components/common/Navigation";
 import KeysApp from "./components/KeysApp";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import OfferApp from "./components/OfferApp";
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <Navigation />
       <Routes>
         <Route path="/" element={<OfferApp />} />
-        <Route path="/keys" element={<KeysApp />} />
+        <Route path="keys" element={<KeysApp />} />
       </Routes>
     </Router>
   );
