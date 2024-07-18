@@ -40,14 +40,14 @@ export default function OfferApp() {
       const queryParams = new URLSearchParams({
         arrival: arrival_date,
         departure: departure_date,
-        guests: n_guests.toString(),
-        hotel: hotel,
+        adults: n_guests.toString(),
+        propertyId: hotel,
       }).toString();
 
-      const response = await fetch(`${API_URL}?${queryParams}`);
+      const response = await fetch(`${API_URL}/offers?${queryParams}`);
       const data = await response.json();
       if (!response.ok) {
-        throw new Error("Failed to get offer");
+        alert("Failed to get offer");
       }
       setOffer(data.offer);
       setCopied(false);
