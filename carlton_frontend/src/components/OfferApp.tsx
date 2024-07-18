@@ -48,6 +48,7 @@ export default function OfferApp() {
       const data = await response.json();
       if (!response.ok) {
         alert("Failed to get offer");
+        return;
       }
       setOffer(data.offer);
       setCopied(false);
