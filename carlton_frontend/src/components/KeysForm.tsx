@@ -8,13 +8,11 @@ import FloatingTextForm from "./common/FloatingTextForm";
 const KeysForm = ({ fetchKeys }: { fetchKeys: any }) => {
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
-  const [room_name, setRoomName] = useState("");
   const [amount, setAmount] = useState(0);
 
   const resetForm = () => {
     setName("");
     setBrand("");
-    setRoomName("");
     setAmount(0);
   };
 
@@ -34,7 +32,6 @@ const KeysForm = ({ fetchKeys }: { fetchKeys: any }) => {
     const data = {
       name,
       brand,
-      room_name,
       amount,
     };
 
@@ -48,7 +45,6 @@ const KeysForm = ({ fetchKeys }: { fetchKeys: any }) => {
     <Form onSubmit={onSubmit} className="add-key-form">
       <FloatingTextForm label="Key Name" value={name} setValue={setName} />
       <FloatingTextForm label="Key Brand" value={brand} setValue={setBrand} />
-      <FloatingTextForm label="Room Name" value={room_name} setValue={setRoomName} />
       <FloatingLabel controlId="formKeyAmount" label="Amount of Keys" className="mb-3">
         <Form.Control
           type="number"

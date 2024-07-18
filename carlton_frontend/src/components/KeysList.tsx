@@ -35,7 +35,6 @@ const KeysList: React.FC<KeysListProps> = ({ keys, updateCallback }) => {
             <th>id</th>
             <th>Key Name</th>
             <th>Brand</th>
-            <th>Room Name</th>
             <th>Amount</th>
             <th>Actions</th>
           </tr>
@@ -46,7 +45,6 @@ const KeysList: React.FC<KeysListProps> = ({ keys, updateCallback }) => {
               <td>{key.id}</td>
               <td>{key.name}</td>
               <td>{key.brand}</td>
-              <td>{key.room_name}</td>
               <td>{key.amount}</td>
               <td>
                 <button
