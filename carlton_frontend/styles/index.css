@@ -13,7 +13,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-nav{
+nav {
   background-color: #1a1a1a;
   width: 100%;
   height: 100px;
@@ -26,11 +26,6 @@ nav{
 nav > img {
   margin: 10px 50px;
 }
-
-nav > div {
-
-}
-
 
 a {
   font-weight: 500;
@@ -52,8 +47,7 @@ body {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
-  font-variation-settings:
-    "slnt" 0;
+  font-variation-settings: "slnt" 0;
 }
 
 main {
@@ -100,42 +94,17 @@ button:focus-visible {
   }
 }
 
-
-.g-2{
-  padding-bottom: 5px;
-  margin: auto;
-  width: 66%;
-  padding: 10px;
-}
-
-
-Label > p {
-  font-size: 1.2em;
-  font-weight: 500;
-  text-align: right;
-  padding: 0px 0px;
-  margin-top: 5px;
-}
-
-.offer {
-  width: 750px;
-  white-space: pre-line;
-  text-align: left;
-  padding-bottom: 10px;
-  margin: auto;
-}
-
-.alert{
-  width: 750px;
-  text-align: center;
-  padding-bottom: 10px;
-  margin: auto;
-}
-
-.copy_button {
+.add-key-form {
   margin-bottom: 10px;
+  margin: auto;
+  padding: 10px;
+  width: 30%;
 }
 
-.n_guests_picker{
-  width: 75px;
+.keys-button {
+  width: 50%;
+  margin: 0px 0px;
+}
+.col-empty {
+  width: 10%;
 }

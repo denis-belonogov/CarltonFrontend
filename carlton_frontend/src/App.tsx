@@ -1,6 +1,6 @@
-import "./App.css";
+import "../styles/App.css";
 import OfferApp from "./components/OfferApp";
-import Navigation from "./components/Navigation";
+import Navigation from "./components/common/Navigation";
 import KeysApp from "./components/KeysApp";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 

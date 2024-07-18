@@ -4,18 +4,14 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
-
-//let backendUrl: string = "https://localhost:5000/?";
-let backendUrl: string = "https://tiefpass.pythonanywhere.com/?";
+import { API_URL } from "../constants";
+import { format, addDays } from "date-fns";
+import "../../styles/Offer.css";
 
 export default function OfferApp() {
-  // Importing useState and ChangeEvent from React
-  // Initialize date state as a string in 'YYYY-MM-DD' format to match the input type 'date'
-  var currentDate = new Date();
-  var currentDateString = currentDate.toJSON().slice(0, 10);
-  var tomorrow = currentDate;
-  tomorrow.setDate(currentDate.getDate() + 1);
-  var tomorrowDateString = tomorrow.toJSON().slice(0, 10);
+  const currentDate = new Date();
+  const currentDateString = format(currentDate, "yyyy-MM-dd");
+  const tomorrowDateString = format(addDays(currentDate, 1), "yyyy-MM-dd");
   const [arrival_date, setArrivalDate] = useState(currentDateString);
   const [departure_date, setDepartureDate] = useState(tomorrowDateString);
   const [offer, setOffer] = useState("");
@@ -23,15 +19,12 @@ export default function OfferApp() {
   const [hotel, setHotel] = useState("CARLTON");
   const [copied, setCopied] = useState(false);
 
-  // Function to format the date from the date picker to 'YYYY-MM-DD'
   const handleArrivalDateChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newDate = e.target.value; // This will be in 'YYYY-MM-DD' format
-    setArrivalDate(newDate);
+    setArrivalDate(e.target.value);
   };
 
   const handleDepartureDateChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newDate = e.target.value; // This will be in 'YYYY-MM-DD' format
-    setDepartureDate(newDate);
+    setDepartureDate(e.target.value);
   };
 
   const handleGuestsChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -39,23 +32,28 @@ export default function OfferApp() {
   };
 
   const handleHotelChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newDate = e.target.value; // This will be in 'YYYY-MM-DD' format
-    setHotel(newDate);
+    setHotel(e.target.value);
   };
 
   async function handleSubmit() {
-    const response = await fetch(
-      backendUrl +
-        new URLSearchParams({
-          arrival: arrival_date,
-          departure: departure_date,
-          adults: n_guests.toString(),
-          propertyId: hotel,
-        })
-    );
-    const data = await response.json();
-    setOffer(data.offer);
-    setCopied(false);
+    try {
+      const queryParams = new URLSearchParams({
+        arrival: arrival_date,
+        departure: departure_date,
+        guests: n_guests.toString(),
+        hotel: hotel,
+      }).toString();
+
+      const response = await fetch(`${API_URL}?${queryParams}`);
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error("Failed to get offer");
+      }
+      setOffer(data.offer);
+      setCopied(false);
+    } catch (error) {
+      alert("Failed to get offer");
+    }
   }
 
   return (
@@ -67,11 +65,7 @@ export default function OfferApp() {
           </Form.Label>
         </Col>
         <Col md="auto" className="g-2-col">
-          <Form.Control
-            type="date"
-            value={arrival_date}
-            onChange={handleArrivalDateChange}
-          />
+          <Form.Control type="date" value={arrival_date} onChange={handleArrivalDateChange} />
         </Col>
 
         <Col md="auto" className="g-2-col">
@@ -80,11 +74,7 @@ export default function OfferApp() {
           </Form.Label>
         </Col>
         <Col md="auto" className="g-2-col">
-          <Form.Control
-            type="date"
-            value={departure_date}
-            onChange={handleDepartureDateChange}
-          />
+          <Form.Control type="date" value={departure_date} onChange={handleDepartureDateChange} />
         </Col>
 
         <Col md="auto" className="g-2-col">
@@ -93,20 +83,10 @@ export default function OfferApp() {
           </Form.Label>
         </Col>
         <Col md="auto" className="g-2-col">
-          <Form.Control
-            className="n_guests_picker"
-            type="number"
-            value={n_guests}
-            onChange={handleGuestsChange}
-          />
+          <Form.Control className="n_guests_picker" type="number" value={n_guests} onChange={handleGuestsChange} />
         </Col>
         <Col md="auto" className="g-2-col">
-          <Form.Select
-            value={hotel}
-            onChange={(e) =>
-              handleHotelChange(e as unknown as ChangeEvent<HTMLInputElement>)
-            }
-          >
+          <Form.Select value={hotel} onChange={(e) => handleHotelChange(e as unknown as ChangeEvent<HTMLInputElement>)}>
             <option value="CARLTON">Hotel Carlton</option>
             <option value="SENATOR">Hotel Senator</option>
           </Form.Select>

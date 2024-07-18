@@ -1,0 +1,43 @@
+.g-2 {
+  padding-bottom: 5px;
+  margin: auto;
+  width: 66%;
+  padding: 10px;
+}
+
+Label > p {
+  font-size: 1.2em;
+  font-weight: 500;
+  text-align: right;
+  padding: 0px 0px;
+  margin-top: 5px;
+}
+
+.offer {
+  width: 750px;
+  white-space: pre-line;
+  text-align: left;
+  padding-bottom: 10px;
+  margin: auto;
+}
+
+.copy_button {
+  margin-bottom: 10px;
+}
+
+.n_guests_picker {
+  width: 75px;
+}
+
+.form-label {
+  width: 100%;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.alert {
+  width: 750px;
+  text-align: center;
+  padding-bottom: 10px;
+  margin: auto;
+}
