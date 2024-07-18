@@ -16,7 +16,7 @@ export const onDelete = async (id: number, updateCallback: () => void) => {
 };
 
 export const fetchKeys = async (setKeys: (keys: []) => void) => {
-  const response = await fetch("${API_URL}/keys");
+  const response = await fetch(`${API_URL}/keys`);
   const data = await response.json();
   setKeys(data.keys);
 };

@@ -2,8 +2,8 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
-import FloatingTextForm from "./common/FloatingTextForm";
 import { API_URL } from "../constants";
+import FloatingTextForm from "./common/FloatingTextForm";
 
 const KeysForm = ({ fetchKeys }: { fetchKeys: any }) => {
   const [name, setName] = useState("");
@@ -39,7 +39,7 @@ const KeysForm = ({ fetchKeys }: { fetchKeys: any }) => {
     };
 
     try {
-      const response = await fetch("${API_URL}/keys", {
+      const response = await fetch(`${API_URL}/keys`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
