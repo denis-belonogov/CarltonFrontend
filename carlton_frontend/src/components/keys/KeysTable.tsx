@@ -1,9 +1,9 @@
 import { faFilePen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
-import "../../styles/KeysList.css";
-import { deleteKey } from "../services/keysService";
+import "../../../styles/KeysList.css";
+import { deleteKey, fetchKeys } from "../../services/keysService";
 
 interface Key {
   id: number;
@@ -13,17 +13,19 @@ interface Key {
   amount: number;
 }
 
-// Update the component props to include types
-interface KeysListProps {
-  keys: Key[];
-  updateCallback: () => void;
-}
+const KeysTable = () => {
+  const [keys, setKeys] = useState([]);
 
-const KeysList: React.FC<KeysListProps> = ({ keys, updateCallback }) => {
+  useEffect(() => {
+    fetchKeys(setKeys);
+  }, [keys]);
+
   const onClick = async (e: React.MouseEvent<HTMLButtonElement>, key: Key) => {
     e.stopPropagation();
     if (window.confirm("Are you sure you want to delete this key?")) {
-      deleteKey(key.id, updateCallback);
+      deleteKey(key.id, () => {
+        fetchKeys(setKeys);
+      });
     }
   };
 
@@ -40,7 +42,7 @@ const KeysList: React.FC<KeysListProps> = ({ keys, updateCallback }) => {
           </tr>
         </thead>
         <tbody>
-          {keys.map((key) => (
+          {keys.map((key: Key) => (
             <tr key={key.id}>
               <td>{key.id}</td>
               <td>{key.name}</td>
@@ -70,4 +72,4 @@ const KeysList: React.FC<KeysListProps> = ({ keys, updateCallback }) => {
   );
 };
 
-export default KeysList;
+export default KeysTable;
