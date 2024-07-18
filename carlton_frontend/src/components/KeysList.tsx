@@ -2,8 +2,8 @@ import { faFilePen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import Table from "react-bootstrap/Table";
-import { onDelete } from "../services/keysService";
 import "../../styles/KeysList.css";
+import { deleteKey } from "../services/keysService";
 
 interface Key {
   id: number;
@@ -23,7 +23,7 @@ const KeysList: React.FC<KeysListProps> = ({ keys, updateCallback }) => {
   const onClick = async (e: React.MouseEvent<HTMLButtonElement>, key: Key) => {
     e.stopPropagation();
     if (window.confirm("Are you sure you want to delete this key?")) {
-      onDelete(key.id, updateCallback);
+      deleteKey(key.id, updateCallback);
     }
   };
 

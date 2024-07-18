@@ -1,9 +1,9 @@
 import { API_URL } from "../constants";
 
-export const onDelete = async (id: number, updateCallback: () => void) => {
+export const deleteKey = async (id: number, updateCallback: () => void) => {
   try {
     const options = { method: "DELETE" };
-    const response = await fetch("${API_URL}/keys/${id}", options);
+    const response = await fetch("${API_URL}/keys/delete/${id}", options);
 
     if (response.status === 200) {
       updateCallback();
@@ -30,14 +30,15 @@ export const addKey = async (keyData: any, callback: () => void) => {
       },
       body: JSON.stringify(keyData),
     };
-    const response = await fetch(`${API_URL}/keys`, options);
+    const response = await fetch(`${API_URL}/keys/add/`, options);
 
     if (response.status === 201) {
       callback();
     } else {
-      console.error("Failed to add new key");
+      alert("Failed to submit the form");
     }
   } catch (error) {
     console.error(error);
+    alert(error);
   }
 };

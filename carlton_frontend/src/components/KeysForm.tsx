@@ -2,7 +2,7 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
-import { API_URL } from "../constants";
+import { addKey } from "../services/keysService";
 import FloatingTextForm from "./common/FloatingTextForm";
 
 const KeysForm = ({ fetchKeys }: { fetchKeys: any }) => {
@@ -38,24 +38,10 @@ const KeysForm = ({ fetchKeys }: { fetchKeys: any }) => {
       amount,
     };
 
-    try {
-      const response = await fetch(`${API_URL}/keys`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error("Server error while submitting the form");
-      }
+    addKey(data, () => {
       fetchKeys();
       resetForm();
-    } catch (error) {
-      console.error(error);
-      alert("Failed to submit the form");
-    }
+    });
   };
 
   return (
