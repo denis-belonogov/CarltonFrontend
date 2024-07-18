@@ -98,13 +98,32 @@ button:focus-visible {
   margin-bottom: 10px;
   margin: auto;
   padding: 10px;
-  width: 30%;
+  width: 50%;
+}
+
+.mb-3 {
+  margin: auto;
+  width: 15%;
 }
 
 .keys-button {
-  width: 50%;
   margin: 0px 0px;
 }
+
+.offer-button{
+  margin: 0px auto;
+  height: 58px;
+}
+
+.offer-button > p {
+  margin: auto;
+}
+
 .col-empty {
   width: 10%;
+}
+
+.select-room-type{
+  padding: 16px;
+  margin-bottom: 10px;
 }

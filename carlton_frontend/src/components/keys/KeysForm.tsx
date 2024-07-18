@@ -2,10 +2,10 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
-import { addKey } from "../../services/keysService";
+import { addKey, getKeys } from "../../services/keysService";
 import FloatingTextForm from "../common/FloatingTextForm";
 
-const KeysForm = () => {
+const KeysForm = ({ setKeys }: { setKeys: (value: []) => void }) => {
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
   const [amount, setAmount] = useState(0);
@@ -37,6 +37,7 @@ const KeysForm = () => {
 
     addKey(data, () => {
       resetForm();
+      getKeys(setKeys);
     });
   };
 

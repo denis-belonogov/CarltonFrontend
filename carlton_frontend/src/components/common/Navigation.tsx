@@ -26,6 +26,9 @@ export default function Navigation() {
             <Nav.Link as={Link} to="/keys">
               Keys
             </Nav.Link>
+            <Nav.Link as={Link} to="/rooms">
+              Rooms
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

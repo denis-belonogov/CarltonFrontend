@@ -1,9 +1,9 @@
-import { faFilePen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Table from "react-bootstrap/Table";
 import "../../../styles/KeysList.css";
-import { deleteKey, fetchKeys } from "../../services/keysService";
+import { deleteKey, getKeys } from "../../services/keysService";
 
 interface Key {
   id: number;
@@ -13,18 +13,21 @@ interface Key {
   amount: number;
 }
 
-const KeysTable = () => {
-  const [keys, setKeys] = useState([]);
+interface KeysTableProps {
+  keys: Key[];
+  setKeys: (value: []) => void;
+}
 
+const KeysTable: React.FC<KeysTableProps> = ({ keys, setKeys }) => {
   useEffect(() => {
-    fetchKeys(setKeys);
-  }, [keys]);
+    getKeys(setKeys);
+  }, []);
 
   const onClick = async (e: React.MouseEvent<HTMLButtonElement>, key: Key) => {
     e.stopPropagation();
     if (window.confirm("Are you sure you want to delete this key?")) {
       deleteKey(key.id, () => {
-        fetchKeys(setKeys);
+        getKeys(setKeys);
       });
     }
   };
@@ -49,13 +52,6 @@ const KeysTable = () => {
               <td>{key.brand}</td>
               <td>{key.amount}</td>
               <td>
-                <button
-                  onClick={() => {
-                    //onDelete(key.id);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faFilePen} />
-                </button>
                 <button
                   onClick={(e) => {
                     onClick(e, key);
