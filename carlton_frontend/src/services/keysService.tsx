@@ -30,7 +30,7 @@ export const addKey = async (keyData: any, callback: () => void) => {
       },
       body: JSON.stringify(keyData),
     };
-    const response = await fetch(`${API_URL}/keys/add/`, options);
+    const response = await fetch(`${API_URL}/keys/add`, options);
 
     if (response.status === 201) {
       callback();
