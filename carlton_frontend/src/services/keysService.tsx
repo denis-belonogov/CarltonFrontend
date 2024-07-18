@@ -3,7 +3,7 @@ import { API_URL } from "../constants";
 export const deleteKey = async (id: number, updateCallback: () => void) => {
   try {
     const options = { method: "DELETE" };
-    const response = await fetch("${API_URL}/keys/delete/${id}", options);
+    const response = await fetch(`${API_URL}/keys/delete/${id}`, options);
 
     if (response.status === 200) {
       updateCallback();
