@@ -27,7 +27,7 @@ export const addRoom = async (roomData: any, callback: () => void) => {
     if (response.ok) {
       callback();
     } else {
-      alert("Failed to submit the form");
+      alert("Failed to submit the form"); //TODO: response.data.message
     }
   } catch (error) {
     console.error(error);
