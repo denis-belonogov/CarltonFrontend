@@ -36,7 +36,7 @@ const RoomsTable: React.FC<RoomsTableProps> = ({ rooms, setRooms }) => {
   };
 
   return (
-    <Table striped bordered hover>
+    <Table striped bordered hover className="table">
       <thead>
         <tr>
           <th>id</th>

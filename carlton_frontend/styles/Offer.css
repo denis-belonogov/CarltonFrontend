@@ -1,10 +1,3 @@
-.g-2 {
-  padding-bottom: 5px;
-  margin: auto;
-  width: 66%;
-  padding: 10px;
-}
-
 Label > p {
   font-size: 1.2em;
   font-weight: 500;
@@ -14,25 +7,33 @@ Label > p {
 }
 
 .offer {
-  width: 750px;
+  margin: 1% 10%;
+  display: inline-block;
   white-space: pre-line;
   text-align: left;
   padding-bottom: 10px;
-  margin: auto;
-}
-
-.copy_button {
-  margin-bottom: 10px;
 }
 
 .n_guests_picker {
   width: 75px;
 }
 
-.form-label {
-  width: 100%;
-  padding-left: 0px;
-  padding-right: 0px;
+.offer-form{
+  margin: 1% 10%;
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 0px 0px;
+}
+
+.offer-form-field {
+  flex-grow: 1;
+  flex-basis: 160px;
+  margin: 0px 0px;
+  vertical-align: top;
 }
 
 .alert {
@@ -41,3 +42,35 @@ Label > p {
   padding-bottom: 10px;
   margin: auto;
 }
+
+.submit-button {
+  border: 1px;
+  border-style: solid;
+  border-color: rgb(222, 226, 230);
+  background-color: white;
+  margin-bottom: 16px;
+  padding: 0px 0px;
+  width: 100%;
+
+}
+
+.copy-button {
+  border: 1px;
+  border-style: solid;
+  border-color: rgb(222, 226, 230);
+  background-color: white;
+  margin-bottom: 16px;
+  padding: 0px 0px;
+  width: 100%;
+  margin: 1% 10%;
+}
+
+p {
+  margin: 0px 0px;
+  padding: 16px 0px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+
+

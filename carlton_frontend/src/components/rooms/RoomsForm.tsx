@@ -13,7 +13,7 @@ const RoomsForm = ({ setRooms }: { setRooms: (value: []) => void }) => {
   const resetForm = () => {
     setRoomName("");
     setRoomType(1);
-    setRoomFloor(0);
+    setRoomFloor(1);
   };
 
   const onSubmit = async (e: React.FormEvent) => {
@@ -37,9 +37,9 @@ const RoomsForm = ({ setRooms }: { setRooms: (value: []) => void }) => {
   };
 
   return (
-    <Form onSubmit={onSubmit} className="add-key-form">
+    <Form onSubmit={onSubmit} className="offer-form">
       <FloatingTextForm label="Room Name" value={name} setValue={setRoomName} />
-      <FloatingLabel controlId="formKeyAmount" label="Floor" className="mb-3">
+      <FloatingLabel controlId="formKeyAmount" label="Floor" className="mb-3 offer-form-field">
         <Form.Control
           type="number"
           placeholder="Floor"
@@ -47,10 +47,8 @@ const RoomsForm = ({ setRooms }: { setRooms: (value: []) => void }) => {
           onChange={(e) => setRoomFloor(Number(e.target.value))}
         />
       </FloatingLabel>
-
-      <FloatingLabel controlId="floatingSelect" label="Room Type">
+      <FloatingLabel controlId="floatingSelect" label="Room Type" className="mb-3 offer-form-field">
         <Form.Select
-          className="select-room-type"
           aria-label="Default select example"
           onChange={(e) => {
             setRoomType(Number(e.target.value));
@@ -61,9 +59,9 @@ const RoomsForm = ({ setRooms }: { setRooms: (value: []) => void }) => {
           <option value="2">Staff</option>
         </Form.Select>
       </FloatingLabel>
-      <Button type="submit" className="keys-button">
-        Add Room
-      </Button>
+      <Button variant="light" type="submit" className="submit-button offer-form-field">
+        <p>Add Room</p>
+      </Button>{" "}
     </Form>
   );
 };

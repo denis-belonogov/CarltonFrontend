@@ -34,7 +34,7 @@ const KeysTable: React.FC<KeysTableProps> = ({ keys, setKeys }) => {
 
   return (
     <>
-      <Table striped bordered hover w-auto className="table">
+      <Table striped bordered hover className="table">
         <thead>
           <tr>
             <th>id</th>
