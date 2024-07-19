@@ -10,7 +10,7 @@ interface FloatingTextFormProps {
 
 const FloatingTextForm: React.FC<FloatingTextFormProps> = ({ label, value, setValue }) => {
   return (
-    <FloatingLabel controlId={`form${label.replace(" ", "")}`} label={label} className="mb-3">
+    <FloatingLabel controlId={`form${label.replace(" ", "")}`} label={label} className="mb-3 offer-form-field">
       <Form.Control type="text" placeholder={label} value={value} onChange={(e) => setValue(e.target.value)} />
     </FloatingLabel>
   );

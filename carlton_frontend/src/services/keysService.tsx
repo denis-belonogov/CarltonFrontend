@@ -1,44 +1,43 @@
 import { API_URL } from "../constants";
 
-export const deleteKey = async (id: number, updateCallback: () => void) => {
-  try {
-    const options = { method: "DELETE" };
-    const response = await fetch(`${API_URL}/keys/delete/${id}`, options);
-
-    if (response.status === 200) {
-      updateCallback();
-    } else {
-      console.error("Failed to delete");
-    }
-  } catch (error) {
-    alert(error);
-  }
-};
-
-export const fetchKeys = async (setKeys: (keys: []) => void) => {
+export const getKeys = async (callback: (keys: []) => void) => {
   const response = await fetch(`${API_URL}/keys`);
   const data = await response.json();
-  setKeys(data.keys);
+  callback(data.keys);
 };
 
 export const addKey = async (keyData: any, callback: () => void) => {
   try {
-    const options = {
+    const response = await fetch(`${API_URL}/keys/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(keyData),
-    };
-    const response = await fetch(`${API_URL}/keys/add`, options);
+    });
 
-    if (response.status === 201) {
+    if (response.ok) {
       callback();
     } else {
       alert("Failed to submit the form");
     }
   } catch (error) {
     console.error(error);
+    alert(error);
+  }
+};
+
+export const deleteKey = async (id: number, callback: () => void) => {
+  try {
+    const response = await fetch(`${API_URL}/keys/delete/${id}`, { method: "DELETE" });
+
+    if (response.ok) {
+      callback();
+    } else {
+      console.error("Failed to delete");
+    }
+  } catch (error) {
+    console.error("There was a problem with the delete operation:", error);
     alert(error);
   }
 };
