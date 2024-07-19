@@ -55,9 +55,12 @@ const KeysForm = ({ setKeys }: { setKeys: (value: []) => void }) => {
           onChange={(e) => setAmount(Number(e.target.value))}
         />
       </FloatingLabel>
-      <Button variant="light" type="submit" className="submit-button offer-form-field">
+      <div className="break"></div>
+      <div className="mb-3 offer-form-field d-none d-lg-block"></div>
+      <Button variant="success" type="submit" className="submit-button offer-form-field">
         <p>Add Key</p>
       </Button>{" "}
+      <div className="mb-3 offer-form-field d-none d-lg-block"></div>
     </Form>
   );
 };

@@ -14,6 +14,10 @@ Label > p {
   padding-bottom: 10px;
 }
 
+.copy_button {
+  margin-bottom: 10px;
+}
+
 .n_guests_picker {
   width: 75px;
 }
@@ -23,7 +27,7 @@ Label > p {
   display: flex;
   align-items: flex-end;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 0px 16px;
   justify-content: space-evenly;
   align-items: center;
   padding: 0px 0px;
@@ -47,27 +51,30 @@ Label > p {
   border: 1px;
   border-style: solid;
   border-color: rgb(222, 226, 230);
-  background-color: white;
   margin-bottom: 16px;
   padding: 0px 0px;
-  width: 100%;
+}
 
+.break {
+  flex-basis: 100%;
+  height: 0;
 }
 
 .copy-button {
   border: 1px;
   border-style: solid;
   border-color: rgb(222, 226, 230);
-  background-color: white;
   margin-bottom: 16px;
   padding: 0px 0px;
-  width: 100%;
+  width: 75%;
   margin: 1% 10%;
+  display: inline-block;
+
 }
 
 p {
   margin: 0px 0px;
-  padding: 16px 0px;
+  padding: 17px 0px;
   vertical-align: middle;
   text-align: center;
 }

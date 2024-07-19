@@ -59,9 +59,12 @@ const RoomsForm = ({ setRooms }: { setRooms: (value: []) => void }) => {
           <option value="2">Staff</option>
         </Form.Select>
       </FloatingLabel>
-      <Button variant="light" type="submit" className="submit-button offer-form-field">
+      <div className="break"></div>
+      <div className="mb-3 offer-form-field d-none d-lg-block"></div>
+      <Button variant="success" type="submit" className="mb-3 offer-form-field submit-button">
         <p>Add Room</p>
       </Button>{" "}
+      <div className="mb-3 offer-form-field d-none d-lg-block"></div>
     </Form>
   );
 };

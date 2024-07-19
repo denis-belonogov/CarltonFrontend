@@ -1,6 +1,6 @@
 import { addDays, format } from "date-fns";
 import { ChangeEvent, useState } from "react";
-import { Col, FloatingLabel, Spinner } from "react-bootstrap";
+import { FloatingLabel, Spinner } from "react-bootstrap";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -78,37 +78,39 @@ export default function OfferApp() {
             <option value="SENATOR">Hotel Senator</option>
           </Form.Select>
         </FloatingLabel>
-        <Button variant="light" type="submit" className="submit-button offer-form-field">
+        <div className="break"></div>
+        <div className="mb-3 offer-form-field d-none d-lg-block"></div>
+        <Button variant="success" type="submit" className="submit-button offer-form-field">
           <p>Generate Offer</p>
         </Button>{" "}
+        <div className="mb-3 offer-form-field d-none d-lg-block"></div>
+        <div className="break"></div>
+        {loading && <Spinner animation="border" role="status" />}
+        {!loading && <div className="offer">{offer}</div>}
+        {offer.length != 0 && (
+          <>
+            <div className="break"></div>
+            <div className="mb-3 offer-form-field d-none d-lg-block"></div>
+            {!loading && (
+              <Button
+                className="submit-button offer-form-field"
+                variant="success"
+                onClick={() => {
+                  navigator.clipboard.writeText(offer);
+                  setCopied(true);
+                  setTimeout(() => {
+                    setCopied(false);
+                  }, 2000);
+                }}
+              >
+                <p>Copy</p>
+              </Button>
+            )}
+
+            <div className="mb-3 offer-form-field d-none d-lg-block"></div>
+          </>
+        )}
       </Form>
-      {loading && <Spinner animation="border" role="status" />}
-      {!loading && (
-        <>
-          <div className="offer">{offer}</div>
-          <div className="offer-form">
-            <Col className="d-none d-lg-block offer-form-field"></Col>
-            <Col className="mb-3 offer-form-field">
-              {offer.length != 0 && (
-                <Button
-                  className="submit-button offer-form-field"
-                  variant="light"
-                  onClick={() => {
-                    navigator.clipboard.writeText(offer);
-                    setCopied(true);
-                    setTimeout(() => {
-                      setCopied(false);
-                    }, 2000);
-                  }}
-                >
-                  <p>Copy</p>
-                </Button>
-              )}
-            </Col>{" "}
-            <Col className="d-none d-lg-block offer-form-field"></Col>
-          </div>
-        </>
-      )}
       <Alert className="alert" variant="success" show={copied}>
         Offer Text copied to clipboard!
       </Alert>
