@@ -38,6 +38,7 @@ Label > p {
   flex-basis: 160px;
   margin: 0px 0px;
   vertical-align: top;
+  align-self: flex-start;
 }
 
 .alert {

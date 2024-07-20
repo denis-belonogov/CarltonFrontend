@@ -40,7 +40,7 @@ const KeysTable: React.FC<KeysTableProps> = ({ keys, setKeys }) => {
             <th>id</th>
             <th>Key Name</th>
             <th>Brand</th>
-            <th>Amount</th>
+            <th>Quantity</th>
             <th>Actions</th>
           </tr>
         </thead>
