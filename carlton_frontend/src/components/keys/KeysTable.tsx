@@ -1,7 +1,9 @@
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Column } from "primereact/column";
+import { DataTable } from "primereact/datatable";
+import "primereact/resources/themes/md-light-indigo/theme.css";
 import React, { useEffect } from "react";
-import Table from "react-bootstrap/Table";
 import "../../../styles/KeysList.css";
 import { deleteKey, getKeys } from "../../services/keysService";
 
@@ -23,47 +25,34 @@ const KeysTable: React.FC<KeysTableProps> = ({ keys, setKeys }) => {
     getKeys(setKeys);
   }, []);
 
-  const onClick = async (e: React.MouseEvent<HTMLButtonElement>, key: Key) => {
-    e.stopPropagation();
+  const click = async (row: Key) => {
     if (window.confirm("Are you sure you want to delete this key?")) {
-      deleteKey(key.id, () => {
+      deleteKey(row.id, () => {
         getKeys(setKeys);
       });
     }
   };
+  const deleteButton = (data: any) => {
+    return (
+      <button
+        onClick={() => {
+          click(data);
+        }}
+      >
+        <FontAwesomeIcon icon={faTrashCan} />
+      </button>
+    );
+  };
 
   return (
     <>
-      <Table striped bordered hover className="table">
-        <thead>
-          <tr>
-            <th>id</th>
-            <th>Key Name</th>
-            <th>Brand</th>
-            <th>Quantity</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {keys.map((key: Key) => (
-            <tr key={key.id}>
-              <td>{key.id}</td>
-              <td>{key.name}</td>
-              <td>{key.brand}</td>
-              <td>{key.amount}</td>
-              <td>
-                <button
-                  onClick={(e) => {
-                    onClick(e, key);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faTrashCan} />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <DataTable value={keys} stripedRows removableSort showGridlines className="table">
+        <Column field="id" header="id" sortable alignHeader={"center"}></Column>
+        <Column field="name" header="Key Name" sortable alignHeader={"center"}></Column>
+        <Column field="brand" header="Brand" sortable alignHeader={"center"}></Column>
+        <Column field="amount" header="Quantity" sortable alignHeader={"center"}></Column>
+        <Column field="type" header="Actions" body={deleteButton}></Column>
+      </DataTable>
     </>
   );
 };

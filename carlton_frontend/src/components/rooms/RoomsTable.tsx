@@ -1,10 +1,10 @@
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
+import "primereact/resources/themes/md-light-indigo/theme.css";
 import { deleteRoom, getRooms } from "../../services/roomsService";
 
 enum RoomType {
@@ -26,8 +26,6 @@ interface RoomsTableProps {
 }
 
 const RoomsTable: React.FC<RoomsTableProps> = ({ rooms, setRooms }) => {
-  const [sortConfig, setSortConfig] = useState<{ key: string; ascending: boolean } | null>(null);
-
   useEffect(() => {
     getRooms(setRooms);
   }, []);
@@ -40,45 +38,11 @@ const RoomsTable: React.FC<RoomsTableProps> = ({ rooms, setRooms }) => {
     }
   };
 
-  const onClick = async (e: React.MouseEvent<HTMLButtonElement>, room: Room) => {
-    e.stopPropagation();
-    if (window.confirm("Are you sure you want to delete this room?")) {
-      deleteRoom(room.id, () => {
-        getRooms(setRooms);
-      });
-    }
-  };
-
-  const sortedRooms = React.useMemo(() => {
-    let sortableRooms = [...rooms];
-    if (sortConfig !== null) {
-      sortableRooms.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.ascending ? -1 : 1;
-        }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.ascending ? 1 : -1;
-        }
-        return 0;
-      });
-    }
-    return sortableRooms;
-  }, [rooms, sortConfig]);
-
-  const requestSort = (key: string) => {
-    var ascending = true;
-    if (sortConfig && sortConfig.key === key && sortConfig.ascending) {
-      ascending = false;
-    }
-    setSortConfig({ key, ascending });
-  };
-
-  const dateTemplate = (data: any) => {
-    const rowData: Room = data;
+  const deleteButton = (data: any) => {
     return (
       <button
         onClick={() => {
-          click(rowData);
+          click(data);
         }}
       >
         <FontAwesomeIcon icon={faTrashCan} />
@@ -88,22 +52,13 @@ const RoomsTable: React.FC<RoomsTableProps> = ({ rooms, setRooms }) => {
 
   return (
     <div>
-      <DataTable
-        value={rooms}
-        paginator
-        rows={10}
-        rowsPerPageOptions={[5, 10, 25, 50]}
-        stripedRows
-        removableSort
-        showGridlines
-        className="table"
-      >
+      <DataTable value={rooms} stripedRows removableSort showGridlines className="table">
         <Column field="id" header="id" sortable alignHeader={"center"}></Column>
         <Column field="name" header="Room Name" sortable alignHeader={"center"}></Column>
         <Column field="floor" header="Floor" sortable alignHeader={"center"}></Column>
         <Column field="type" header="Type" sortable alignHeader={"center"}></Column>
         <Column field="type" header="Type" sortable alignHeader={"center"}></Column>
-        <Column field="type" header="Actions" body={dateTemplate}></Column>
+        <Column field="type" header="Actions" body={deleteButton}></Column>
       </DataTable>
     </div>
   );
