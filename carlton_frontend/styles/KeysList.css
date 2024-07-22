@@ -3,9 +3,19 @@
   margin: auto;
 }
 
+th {
+  border-width: 1px 1px 1px 1px;
+  border: 1px solid #e4e4e4;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+}
+
 td {
   text-align: center;
   vertical-align: middle;
+  border: 1px solid #e4e4e4;
+  border-width: 1px 1px 1px 1px;
 }
 
 td > button {
