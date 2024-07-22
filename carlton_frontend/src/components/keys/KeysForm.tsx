@@ -9,7 +9,7 @@ import { addKey, getKeys } from "../../services/keysService";
 import FloatingTextForm from "../common/FloatingTextForm";
 
 const validationSchema = Yup.object({
-  name: Yup.string().required("Please enter a key name"),
+  name: Yup.string(),
   brand: Yup.string().required("Please enter a brand"), // Assuming brand is optional
   amount: Yup.number()
     .required("Please enter the quantity of keys")
