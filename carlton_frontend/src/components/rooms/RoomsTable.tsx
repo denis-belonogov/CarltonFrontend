@@ -1,11 +1,12 @@
-import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "primeflex/primeflex.css";
+import "primeicons/primeicons.css";
+import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
 import React, { useEffect } from "react";
 
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import "primereact/resources/themes/md-light-indigo/theme.css";
 import { deleteRoom, getRooms } from "../../services/roomsService";
+import { Button } from "primereact/button";
 
 enum RoomType {
   GUEST = "Guest",
@@ -15,8 +16,8 @@ enum RoomType {
 interface Room {
   id: number;
   name: string;
-  type: RoomType;
   floor: number;
+  type: RoomType;
   [key: string]: any;
 }
 
@@ -40,13 +41,14 @@ const RoomsTable: React.FC<RoomsTableProps> = ({ rooms, setRooms }) => {
 
   const deleteButton = (data: any) => {
     return (
-      <button
+      <Button
+        icon="pi pi-trash"
+        rounded
+        outlined
         onClick={() => {
           click(data);
         }}
-      >
-        <FontAwesomeIcon icon={faTrashCan} />
-      </button>
+      ></Button>
     );
   };
 
@@ -57,8 +59,7 @@ const RoomsTable: React.FC<RoomsTableProps> = ({ rooms, setRooms }) => {
         <Column field="name" header="Room Name" sortable alignHeader={"center"}></Column>
         <Column field="floor" header="Floor" sortable alignHeader={"center"}></Column>
         <Column field="type" header="Type" sortable alignHeader={"center"}></Column>
-        <Column field="type" header="Type" sortable alignHeader={"center"}></Column>
-        <Column field="type" header="Actions" body={deleteButton}></Column>
+        <Column field="actions" header="Actions" alignHeader={"center"} body={deleteButton}></Column>
       </DataTable>
     </div>
   );

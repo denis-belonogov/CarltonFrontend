@@ -51,37 +51,6 @@ h1 {
   line-height: 1.1;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
 
 .add-key-form {
   margin-bottom: 10px;
@@ -90,9 +59,15 @@ button:focus-visible {
   width: 50%;
 }
 
-.mb-3 {
-  margin: auto;
-  width: 15%;
+.key-info {
+  margin: auto auto;
+  padding: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.key-info-sub {
+  color:#888686;
 }
 
 .keys-button {
@@ -130,7 +105,14 @@ nav {
   height: 10%;
 }
 
-button {
-  padding: 10px 10px;
+.title {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
+.surface-0{
+  width: 60%;
+  margin: auto;
+  border-radius: 1%;
+  margin-top: 2%;
+}

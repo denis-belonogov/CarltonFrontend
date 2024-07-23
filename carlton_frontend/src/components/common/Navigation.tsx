@@ -51,3 +51,4 @@ export default function Navigation() {
     </Navbar>
   );
 }
+//TODO: <DarkMode /> for dark mode toggle

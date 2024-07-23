@@ -6,6 +6,22 @@ export const getKeys = async (callback: (keys: []) => void) => {
   callback(data.keys);
 };
 
+export const getKey = async (id: number, callback: (key: any) => void) => {
+  try {
+    const response = await fetch(`${API_URL}/keys/${id}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch the key");
+    }
+    const data = await response.json();
+    console.log("Callback");
+    callback(data);
+    console.log(data);
+  } catch (error) {
+    console.error("There was a problem fetching the key:", error);
+    alert(error);
+  }
+};
+
 export const addKey = async (keyData: any, callback: () => void) => {
   try {
     const response = await fetch(`${API_URL}/keys/`, {
@@ -38,6 +54,27 @@ export const deleteKey = async (id: number, callback: () => void) => {
     }
   } catch (error) {
     console.error("There was a problem with the delete operation:", error);
+    alert(error);
+  }
+};
+
+export const updateKey = async (keyData: any, callback: () => void) => {
+  try {
+    const response = await fetch(`${API_URL}/keys/update/${keyData.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(keyData),
+    });
+
+    if (response.ok) {
+      callback();
+    } else {
+      alert("Failed to submit the form");
+    }
+  } catch (error) {
+    console.error(error);
     alert(error);
   }
 };
