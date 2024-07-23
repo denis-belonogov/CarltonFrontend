@@ -125,6 +125,7 @@ export default function Key() {
                 setQuantity(Number(e.value));
               }}
               showButtons
+              className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1"
             />
           ) : (
             <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">{quantity}</div>
