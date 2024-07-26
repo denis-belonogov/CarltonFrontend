@@ -13,9 +13,7 @@ export const getKey = async (id: number, callback: (key: any) => void) => {
       throw new Error("Failed to fetch the key");
     }
     const data = await response.json();
-    console.log("Callback");
     callback(data);
-    console.log(data);
   } catch (error) {
     console.error("There was a problem fetching the key:", error);
     alert(error);
@@ -45,7 +43,9 @@ export const addKey = async (keyData: any, callback: () => void) => {
 
 export const deleteKey = async (id: number, callback: () => void) => {
   try {
-    const response = await fetch(`${API_URL}/keys/delete/${id}`, { method: "DELETE" });
+    const response = await fetch(`${API_URL}/keys/delete/${id}`, {
+      method: "DELETE",
+    });
 
     if (response.ok) {
       callback();

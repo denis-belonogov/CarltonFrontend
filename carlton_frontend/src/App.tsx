@@ -6,6 +6,7 @@ import Navigation from "./components/common/Navigation";
 import Key from "./components/keys/Key";
 import KeysApp from "./components/keys/KeysApp";
 import OfferApp from "./components/OfferApp";
+import Room from "./components/rooms/Room";
 import RoomsApp from "./components/rooms/RoomsApp";
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="keys" element={<KeysApp />} />
           <Route path="rooms" element={<RoomsApp />} />
           <Route path="key/:id" element={<Key />} />
+          <Route path="room/:id" element={<Room />} />
         </Routes>
       </Router>
     </PrimeReactProvider>

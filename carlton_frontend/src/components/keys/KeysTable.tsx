@@ -5,9 +5,10 @@ import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../../styles/KeysList.css";
 import { deleteKey, getKeys } from "../../services/keysService";
+
 interface Key {
   id: number;
   name: string;
@@ -46,10 +47,6 @@ const KeysTable: React.FC<KeysTableProps> = ({ keys, setKeys }) => {
     );
   };
 
-  const redirectToKey = (key: Key) => {
-    navigate(`/key/${key.id}`);
-  };
-
   return (
     <>
       <DataTable
@@ -58,15 +55,40 @@ const KeysTable: React.FC<KeysTableProps> = ({ keys, setKeys }) => {
         removableSort
         showGridlines
         className="table"
-        selectionMode="single"
-        onSelectionChange={(e) => redirectToKey(e.value)}
-        dataKey="id"
       >
-        <Column field="id" header="id" sortable alignHeader={"center"}></Column>
-        <Column field="name" header="Key Name" sortable alignHeader={"center"}></Column>
-        <Column field="brand" header="Brand" sortable alignHeader={"center"}></Column>
-        <Column field="amount" header="Quantity" sortable alignHeader={"center"}></Column>
-        <Column field="actions" header="Actions" alignHeader={"center"} body={deleteButton}></Column>
+        <Column
+          field="id"
+          header="id"
+          sortable
+          alignHeader={"center"}
+          body={(rowData) => {
+            return <Link to={`/key/${rowData.id}`}>{rowData.id}</Link>;
+          }}
+        ></Column>
+        <Column
+          field="name"
+          header="Key Name"
+          sortable
+          alignHeader={"center"}
+        ></Column>
+        <Column
+          field="brand"
+          header="Brand"
+          sortable
+          alignHeader={"center"}
+        ></Column>
+        <Column
+          field="amount"
+          header="Quantity"
+          sortable
+          alignHeader={"center"}
+        ></Column>
+        <Column
+          field="actions"
+          header="Actions"
+          alignHeader={"center"}
+          body={deleteButton}
+        ></Column>
       </DataTable>
     </>
   );
