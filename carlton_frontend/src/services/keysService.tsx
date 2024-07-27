@@ -3,6 +3,7 @@ import { API_URL } from "../constants";
 export const getKeys = async (callback: (keys: []) => void) => {
   const response = await fetch(`${API_URL}/keys`);
   const data = await response.json();
+  console.log(data.keys);
   callback(data.keys);
 };
 
