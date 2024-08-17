@@ -3,7 +3,6 @@ import { API_URL } from "../constants";
 export const getKeys = async (callback: (keys: []) => void) => {
   const response = await fetch(`${API_URL}/keys`);
   const data = await response.json();
-  console.log(data.keys);
   callback(data.keys);
 };
 
@@ -11,7 +10,7 @@ export const getKey = async (id: number, callback: (key: any) => void) => {
   try {
     const response = await fetch(`${API_URL}/keys/${id}`);
     if (!response.ok) {
-      throw new Error("Failed to fetch the key");
+      console.error("Failed to fetch the key");
     }
     const data = await response.json();
     callback(data);
@@ -46,6 +45,9 @@ export const deleteKey = async (id: number, callback: () => void) => {
   try {
     const response = await fetch(`${API_URL}/keys/delete/${id}`, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
     if (response.ok) {

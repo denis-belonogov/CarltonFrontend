@@ -4,7 +4,7 @@ export const getRooms = async (callback: (rooms: []) => void) => {
   try {
     const response = await fetch(`${API_URL}/rooms`);
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      console.error("Network response was not ok");
     }
     const data = await response.json();
     callback(data.rooms);
@@ -18,7 +18,7 @@ export const getRoom = async (id: number, callback: (room: any) => void) => {
   try {
     const response = await fetch(`${API_URL}/rooms/${id}`);
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      console.error("Network response was not ok");
     }
     const data = await response.json();
     callback(data);
@@ -73,6 +73,46 @@ export const updateRoom = async (roomData: any, callback: () => void) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(roomData),
+    });
+
+    if (response.ok) {
+      callback();
+    } else {
+      alert("Failed to submit the form");
+    }
+  } catch (error) {
+    console.error(error);
+    alert(error);
+  }
+};
+
+export const addKeyToRoom = async (roomId: number, keyId: number, callback: () => void) => {
+  try {
+    const response = await fetch(`${API_URL}/rooms/update/${roomId}/add_key/${keyId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      callback();
+    } else {
+      alert(response.statusText);
+    }
+  } catch (error) {
+    console.error(error);
+    alert(error);
+  }
+};
+
+export const removeKeyFromRoom = async (roomId: number, keyId: number, callback: () => void) => {
+  try {
+    const response = await fetch(`${API_URL}/rooms/update/${roomId}/remove_key/${keyId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
     if (response.ok) {

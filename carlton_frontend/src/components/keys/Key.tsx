@@ -1,31 +1,39 @@
 import "primeflex/primeflex.css";
 import "primeicons/primeicons.css";
 import { Button } from "primereact/button";
+import { Chip } from "primereact/chip";
 import { InputNumber } from "primereact/inputnumber";
 import { InputText } from "primereact/inputtext";
 import "primereact/resources/primereact.css";
-import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
+import "primereact/resources/themes/lara-light-blue/theme.css";
+import { TreeSelect } from "primereact/treeselect";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getKey, updateKey } from "../../services/keysService";
+import { addKeyToRoom, getRooms, removeKeyFromRoom } from "../../services/roomsService";
+import { Room, roomColour } from "../rooms/Room";
+
+export interface Key {
+  id: number;
+  name: string;
+  brand: string;
+  amount: number;
+  rooms: Room[];
+}
 
 export default function Key() {
   const navigate = useNavigate();
-  const [nameEditable, setNameEditable] = useState(false);
-  const [brandEditable, setBrandEditable] = useState(false);
-  const [quantityEditable, setQuantityEditable] = useState(false);
+  const [editable, setEditable] = useState(false);
   const { id } = useParams();
-  interface Key {
-    id: number;
-    name: string;
-    brand: string;
-    amount: number;
-  }
+  const [rooms, setRooms] = useState<Room[]>([]);
   const [key, setKey] = useState<Key>();
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
   const [quantity, setQuantity] = useState(0);
 
+  function isNumeric(value: any) {
+    return /^-?\d+$/.test(value);
+  }
   useEffect(() => {
     getKey(Number(id), (key) => {
       setKey(key);
@@ -33,30 +41,51 @@ export default function Key() {
       setBrand(key.brand);
       setQuantity(key.amount);
     });
+    getRooms(setRooms);
   }, []);
+
+  const nodes: any[] = [0, 1, 2, 3, 4, 5].map((floor) => {
+    return {
+      key: `Floor ${floor}`,
+      label: `Floor ${floor}`,
+      children: [
+        {
+          key: `${floor}-0`,
+          label: "Guest Rooms",
+          children: rooms
+            .filter((room) => {
+              return key?.rooms.findIndex((selRoom) => selRoom.id === room.id) === -1;
+            })
+            .filter((room) => room.type === "Guest" && room.floor === floor)
+            .map((room) => ({ key: room.id.toString(), label: room.name, data: room.name })),
+        },
+        {
+          key: `${floor}-1`,
+          label: "Staff Rooms",
+          children: rooms
+            .filter((room) => {
+              return key?.rooms.findIndex((selRoom) => selRoom.id === room.id) === -1;
+            })
+            .filter((room) => room.type === "Staff" && room.floor === floor)
+            .map((room) => ({ key: room.id.toString(), label: room.name, data: room.name })),
+        },
+      ],
+    };
+  });
 
   return (
     <>
-      <Button
-        label="Back"
-        icon="pi pi-arrow-left"
-        className="p-button-text"
-        onClick={() => navigate("/keys")}
-      />
+      <Button label="Back" icon="pi pi-arrow-left" className="p-button-text" onClick={() => navigate("/keys")} />
       <div className="surface-0">
-        <div className="font-medium text-3xl text-900 key-info">
-          Key Information
-        </div>
+        <div className="font-medium text-3xl text-900 key-info">Key Information</div>
         <ul className="list-none p-0 m-0">
           <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Key id</div>
-            <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">
-              {id}
-            </div>
+            <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">{id}</div>
           </li>
           <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Key Name</div>
-            {nameEditable ? (
+            {editable ? (
               <InputText
                 value={name}
                 onChange={(e) => {
@@ -65,39 +94,12 @@ export default function Key() {
                 className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1"
               />
             ) : (
-              <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">
-                {name}
-              </div>
+              <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">{name}</div>
             )}
-            <div className="w-6 md:w-2 flex justify-content-end flex-order-2">
-              {nameEditable ? (
-                <Button
-                  label="Save"
-                  icon="pi pi-save"
-                  className="p-button-text"
-                  onClick={() => {
-                    setNameEditable(false);
-                    if (key) {
-                      const modified_key = key;
-                      modified_key.name = name;
-                      setKey(modified_key);
-                      updateKey(modified_key, () => {});
-                    }
-                  }}
-                />
-              ) : (
-                <Button
-                  label="Edit"
-                  icon="pi pi-pencil"
-                  className="p-button-text"
-                  onClick={() => setNameEditable(true)}
-                />
-              )}
-            </div>
           </li>
           <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Brand</div>
-            {brandEditable ? (
+            {editable ? (
               <InputText
                 value={brand}
                 onChange={(e) => {
@@ -106,39 +108,12 @@ export default function Key() {
                 className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1"
               />
             ) : (
-              <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">
-                {brand}
-              </div>
+              <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">{brand}</div>
             )}
-            <div className="w-6 md:w-2 flex justify-content-end flex-order-2">
-              {brandEditable ? (
-                <Button
-                  label="Save"
-                  icon="pi pi-save"
-                  className="p-button-text"
-                  onClick={() => {
-                    setBrandEditable(false);
-                    if (key) {
-                      const modified_key = key;
-                      modified_key.brand = brand;
-                      setKey(modified_key);
-                      updateKey(modified_key, () => {});
-                    }
-                  }}
-                />
-              ) : (
-                <Button
-                  label="Edit"
-                  icon="pi pi-pencil"
-                  className="p-button-text"
-                  onClick={() => setBrandEditable(true)}
-                />
-              )}
-            </div>
           </li>
           <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Quantity</div>
-            {quantityEditable ? (
+            {editable ? (
               <InputNumber
                 value={quantity}
                 onValueChange={(e) => {
@@ -148,20 +123,82 @@ export default function Key() {
                 className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1"
               />
             ) : (
-              <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">
-                {quantity}
-              </div>
+              <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">{quantity}</div>
             )}
+          </li>
+          <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Rooms</div>
+            <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">
+              {key?.rooms
+                .sort((a, b) => a.id - b.id)
+                .map((room: Room) => {
+                  return (
+                    <Chip
+                      key={`${room.name}${room.id}`}
+                      label={room.name}
+                      className="mr-2 chip"
+                      style={{ backgroundColor: roomColour(room) }}
+                      onClick={(e) => {
+                        if (!editable) navigate(`/room/${room.id}`);
+                      }}
+                      removable={editable}
+                      onRemove={async (e) => {
+                        const newRoom = rooms.find((room: Room) => room.name === e.value);
+                        if (newRoom) {
+                          await removeKeyFromRoom(newRoom.id, Number(id), () => {});
+                          await getKey(Number(id), (key) => {
+                            setKey(key);
+                          });
+                        }
+                      }}
+                    />
+                  );
+                })}
+            </div>
+          </li>
+          {editable ? (
+            <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+              <div className="text-500 w-6 md:w-2 font-medium">Add Rooms</div>
+              <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">
+                <TreeSelect
+                  filter
+                  value=""
+                  onNodeSelect={(e) => {
+                    e.node.expanded = !e.node.expanded;
+                  }}
+                  onNodeCollapse={(e) => {
+                    e.node.expanded = false;
+                  }}
+                  onChange={async (e) => {
+                    console.log(e.value);
+                    if (!isNumeric(e.value)) return;
+                    await addKeyToRoom(Number(e.value), Number(id), () => {});
+                    await getKey(Number(id), (key) => {
+                      setKey(key);
+                    });
+                  }}
+                  options={nodes}
+                  className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1"
+                  placeholder="Select Item"
+                ></TreeSelect>
+              </div>
+            </li>
+          ) : null}
+          <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium"></div>
+            <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1"></div>
             <div className="w-6 md:w-2 flex justify-content-end flex-order-2">
-              {quantityEditable ? (
+              {editable ? (
                 <Button
                   label="Save"
                   icon="pi pi-save"
                   className="p-button-text"
                   onClick={() => {
-                    setQuantityEditable(false);
+                    setEditable(false);
                     if (key) {
                       const modified_key = key;
+                      modified_key.name = name;
+                      modified_key.brand = brand;
                       modified_key.amount = quantity;
                       setKey(modified_key);
                       updateKey(modified_key, () => {});
@@ -169,12 +206,7 @@ export default function Key() {
                   }}
                 />
               ) : (
-                <Button
-                  label="Edit"
-                  icon="pi pi-pencil"
-                  className="p-button-text"
-                  onClick={() => setQuantityEditable(true)}
-                />
+                <Button label="Edit" icon="pi pi-pencil" className="p-button-text" onClick={() => setEditable(true)} />
               )}
             </div>
           </li>

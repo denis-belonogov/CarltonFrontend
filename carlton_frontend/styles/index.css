@@ -76,6 +76,40 @@ h1 {
   color:#888686;
 }
 
+.chip {
+  cursor: pointer;
+  margin-bottom: 5px;
+  color: #6ea8fe;
+}
+
+.room {
+
+}
+
+.room-dead {
+  background-color: #020202;
+}
+
+.room-floor-1 {
+  background-color: #5438A7;
+}
+
+.room-floor-2 {
+  background-color: #D17007;
+}
+
+.room-floor-3 {
+  background-color: #B4AC01;
+}
+
+.room-floor-4 {
+  background-color: #38B9DB;
+}
+
+.room-floor-5 {
+  background-color: #DC5CBD;
+}
+
 .keys-button {
   margin: 0px 0px;
 }

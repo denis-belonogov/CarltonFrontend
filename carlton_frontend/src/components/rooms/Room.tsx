@@ -2,28 +2,21 @@ import "primeflex/primeflex.css";
 import "primeicons/primeicons.css";
 import { Button } from "primereact/button";
 import { Checkbox } from "primereact/checkbox";
-import { Chips } from "primereact/chips";
+import { Chip } from "primereact/chip";
 import { Dropdown } from "primereact/dropdown";
 import { InputNumber } from "primereact/inputnumber";
 import { InputText } from "primereact/inputtext";
-import { MultiSelect } from "primereact/multiselect";
 import "primereact/resources/primereact.css";
-import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
+import "primereact/resources/themes/lara-light-blue/theme.css";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getKeys } from "../../services/keysService";
-import { getRoom, updateRoom } from "../../services/roomsService";
+import { addKeyToRoom, getRoom, removeKeyFromRoom, updateRoom } from "../../services/roomsService";
+import { Key } from "../keys/Key";
 
 export enum RoomType {
   GUEST = "Guest",
   STAFF = "Staff",
-}
-
-interface Key {
-  id: number;
-  name: string;
-  brand: string;
-  amount: number;
 }
 
 const roomTypes = () => {
@@ -33,30 +26,77 @@ const roomTypes = () => {
   }));
 };
 
+export function roomColour(room: Room) {
+  if (room.type === RoomType.STAFF) {
+    return room.dead ? "#020202" : "#dee2e6";
+  } else {
+    switch (room.floor) {
+      case 0:
+        return "#dee2e6";
+      case 1:
+        return "#5438A7";
+      case 2:
+        return "#D17007";
+      case 3:
+        return "#B4AC01";
+      case 4:
+        return "#38B9DB";
+      case 5:
+        return "#DC5CBD";
+    }
+  }
+}
+
+export function roomStyle(room: Room) {
+  if (room.type === RoomType.STAFF) {
+    return room.dead ? "room-dead" : "room";
+  } else {
+    switch (room.floor) {
+      case 0:
+        return "room";
+      case 1:
+        return "room-floor-1";
+      case 2:
+        return "room-floor-2";
+      case 3:
+        return "room-floor-3";
+      case 4:
+        return "room-floor-4";
+      case 5:
+        return "room-floor-5";
+    }
+  }
+}
+
 export interface Room {
   id: number;
   name: string;
   floor: number;
   type: RoomType;
   dead: boolean;
-  [key: string]: any;
+  keys: Key[];
+}
+
+function buildLabel(key: Key) {
+  return `${key.id}`;
 }
 
 export default function RoomPage() {
   const navigate = useNavigate();
-  const [nameEditable, setNameEditable] = useState(false);
-  const [floorEditable, setFloorEditable] = useState(false);
-  const [typeEditable, setTypeEditable] = useState(false);
-  const [deadEditable, setDeadEditable] = useState(false);
-  const [keysEditable, setKeysEditable] = useState(false);
+  const [editable, setEditable] = useState(false);
   const { id } = useParams();
-  const [keys, setKeys] = useState([]);
-  const [selectedKeys, setSelectedKeys] = useState([]);
+  const [keys, setKeys] = useState<Key[]>([]);
   const [room, setRoom] = useState<Room>();
   const [name, setName] = useState("");
   const [floor, setFloor] = useState(0);
   const [type, setType] = useState<RoomType>(RoomType.GUEST);
   const [dead, setDead] = useState(false);
+
+  function findKeyByLable(label: string) {
+    return keys.find((key) => {
+      return buildLabel(key) === label;
+    });
+  }
 
   useEffect(() => {
     getRoom(Number(id), (room) => {
@@ -71,26 +111,17 @@ export default function RoomPage() {
 
   return (
     <>
-      <Button
-        label="Back"
-        icon="pi pi-arrow-left"
-        className="p-button-text"
-        onClick={() => navigate("/rooms")}
-      />
+      <Button label="Back" icon="pi pi-arrow-left" className="p-button-text" onClick={() => navigate("/rooms")} />
       <div className="surface-0">
-        <div className="font-medium text-3xl text-900 key-info">
-          Room Information
-        </div>
+        <div className="font-medium text-3xl text-900 key-info">Room Information</div>
         <ul className="list-none p-0 m-0">
           <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Room id</div>
-            <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">
-              {id}
-            </div>
+            <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">{id}</div>
           </li>
           <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Room Name</div>
-            {nameEditable ? (
+            {editable ? (
               <InputText
                 value={name}
                 onChange={(e) => {
@@ -99,80 +130,27 @@ export default function RoomPage() {
                 className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1"
               />
             ) : (
-              <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">
-                {name}
-              </div>
+              <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">{name}</div>
             )}
-            <div className="w-6 md:w-2 flex justify-content-end flex-order-2">
-              {nameEditable ? (
-                <Button
-                  label="Save"
-                  icon="pi pi-save"
-                  className="p-button-text"
-                  onClick={() => {
-                    setNameEditable(false);
-                    if (room) {
-                      const modified_room = room;
-                      modified_room.name = name;
-                      setRoom(modified_room);
-                      updateRoom(modified_room, () => {});
-                    }
-                  }}
-                />
-              ) : (
-                <Button
-                  label="Edit"
-                  icon="pi pi-pencil"
-                  className="p-button-text"
-                  onClick={() => setNameEditable(true)}
-                />
-              )}
-            </div>
           </li>
           <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Floor</div>
-            {floorEditable ? (
+            {editable ? (
               <InputNumber
                 value={floor}
+                showButtons
                 onChange={(e) => {
                   setFloor(Number(e.value));
                 }}
                 className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1"
               />
             ) : (
-              <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">
-                {floor}
-              </div>
+              <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">{floor}</div>
             )}
-            <div className="w-6 md:w-2 flex justify-content-end flex-order-2">
-              {floorEditable ? (
-                <Button
-                  label="Save"
-                  icon="pi pi-save"
-                  className="p-button-text"
-                  onClick={() => {
-                    setFloorEditable(false);
-                    if (room) {
-                      const modified_room = room;
-                      modified_room.floor = floor;
-                      setRoom(modified_room);
-                      updateRoom(modified_room, () => {});
-                    }
-                  }}
-                />
-              ) : (
-                <Button
-                  label="Edit"
-                  icon="pi pi-pencil"
-                  className="p-button-text"
-                  onClick={() => setFloorEditable(true)}
-                />
-              )}
-            </div>
           </li>
           <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Type</div>
-            {typeEditable ? (
+            {editable ? (
               <Dropdown
                 value={type}
                 onChange={(e) => {
@@ -182,56 +160,88 @@ export default function RoomPage() {
                 className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1"
               />
             ) : (
-              <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">
-                {type}
-              </div>
+              <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">{type}</div>
             )}
-            <div className="w-6 md:w-2 flex justify-content-end flex-order-2">
-              {typeEditable ? (
-                <Button
-                  label="Save"
-                  icon="pi pi-save"
-                  className="p-button-text"
-                  onClick={() => {
-                    setTypeEditable(false);
-                    if (room) {
-                      const modified_room = room;
-                      modified_room.type = type;
-                      setRoom(modified_room);
-                      updateRoom(modified_room, () => {});
-                    }
-                  }}
-                />
-              ) : (
-                <Button
-                  label="Edit"
-                  icon="pi pi-pencil"
-                  className="p-button-text"
-                  onClick={() => setTypeEditable(true)}
-                />
-              )}
-            </div>
           </li>
           <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Dead Room</div>
 
             <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">
-              <Checkbox
-                onChange={(e) => setDead(Boolean(e.checked))}
-                checked={dead}
-                disabled={!deadEditable}
-              />
+              <Checkbox onChange={(e) => setDead(Boolean(e.checked))} checked={dead} disabled={!editable} />
             </div>
+          </li>
+          <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Keys</div>
+            <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">
+              {room?.keys
+                .sort((a, b) => a.id - b.id)
+                .map((key: Key) => {
+                  return (
+                    <Chip
+                      key={`${key.name}${key.id}`}
+                      label={buildLabel(key)}
+                      className="mr-2 chip"
+                      onClick={(e) => {
+                        if (!editable) navigate(`/key/${key.id}`);
+                      }}
+                      removable={editable}
+                      onRemove={async (e) => {
+                        const newKey = findKeyByLable(e.value);
+                        if (newKey) {
+                          await removeKeyFromRoom(Number(id), newKey.id, () => {});
+                          await getRoom(Number(id), (room) => {
+                            setRoom(room);
+                          });
+                        }
+                      }}
+                    />
+                  );
+                })}
+            </div>
+          </li>
+          {editable ? (
+            <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+              <div className="text-500 w-6 md:w-2 font-medium">Add Keys</div>
+              <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">
+                <Dropdown
+                  value=""
+                  onChange={async (e) => {
+                    const newKey = findKeyByLable(e.value);
+                    if (newKey) {
+                      await addKeyToRoom(Number(id), newKey.id, () => {});
+                      await getRoom(Number(id), (room) => {
+                        setRoom(room);
+                      });
+                    }
+                  }}
+                  options={keys
+                    .filter((key) => {
+                      return room?.keys.findIndex((selKey) => selKey.id === key.id) === -1;
+                    })
+                    .map((key: Key) => {
+                      return buildLabel(key);
+                    })}
+                  className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1"
+                />
+              </div>
+            </li>
+          ) : null}
+          <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium"></div>
+            <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1"></div>
             <div className="w-6 md:w-2 flex justify-content-end flex-order-2">
-              {deadEditable ? (
+              {editable ? (
                 <Button
                   label="Save"
                   icon="pi pi-save"
                   className="p-button-text"
                   onClick={() => {
-                    setDeadEditable(false);
+                    setEditable(false);
                     if (room) {
                       const modified_room = room;
+                      modified_room.name = name;
+                      modified_room.floor = floor;
+                      modified_room.type = type;
                       modified_room.dead = dead;
                       setRoom(modified_room);
                       updateRoom(modified_room, () => {});
@@ -239,63 +249,7 @@ export default function RoomPage() {
                   }}
                 />
               ) : (
-                <Button
-                  label="Edit"
-                  icon="pi pi-pencil"
-                  className="p-button-text"
-                  onClick={() => setDeadEditable(true)}
-                />
-              )}
-            </div>
-          </li>
-          <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Keys</div>
-
-            <div className="text-900 w-full flex md:w-8 md:flex-order-0 flex-order-1">
-              {keysEditable ? (
-                <MultiSelect
-                  value={selectedKeys}
-                  onChange={(e) => setSelectedKeys(e.value)}
-                  options={keys}
-                  optionLabel="name"
-                  display="chip"
-                  placeholder="Select Keys"
-                  maxSelectedLabels={10}
-                  className="flex keys-select"
-                />
-              ) : (
-                <Chips
-                  value={selectedKeys.map((key: Key) => {
-                    return key.name;
-                  })}
-                  disabled
-                  className="w-6 md:w-12 flex justify-content-end flex-order-2"
-                />
-              )}
-            </div>
-            <div className="w-6 md:w-2 flex justify-content-end flex-order-2">
-              {keysEditable ? (
-                <Button
-                  label="Save"
-                  icon="pi pi-save"
-                  className="p-button-text"
-                  onClick={() => {
-                    setKeysEditable(false);
-                    if (room) {
-                      const modified_room = room;
-                      modified_room.keys = selectedKeys;
-                      setRoom(modified_room);
-                      updateRoom(modified_room, () => {});
-                    }
-                  }}
-                />
-              ) : (
-                <Button
-                  label="Edit"
-                  icon="pi pi-pencil"
-                  className="p-button-text"
-                  onClick={() => setKeysEditable(true)}
-                />
+                <Button label="Edit" icon="pi pi-pencil" className="p-button-text" onClick={() => setEditable(true)} />
               )}
             </div>
           </li>
