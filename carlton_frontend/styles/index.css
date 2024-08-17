@@ -92,10 +92,12 @@ h1 {
 
 .room-floor-1 {
   background-color: #5438A7;
+  color: #ffffff;
 }
 
 .room-floor-2 {
   background-color: #D17007;
+  color: #ffffff;
 }
 
 .room-floor-3 {
@@ -108,6 +110,7 @@ h1 {
 
 .room-floor-5 {
   background-color: #DC5CBD;
+  color: #ffffff;
 }
 
 .keys-button {
